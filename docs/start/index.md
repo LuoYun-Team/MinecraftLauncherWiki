@@ -1,18 +1,17 @@
----
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
 
 hero:
-  name: "MinecraftLauncherWiki"
+  name: "Minecraft Launcher Wiki"
   text: "Minecraft 启动器开发指北"
   tagline: My great project tagline
   actions:
     - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
+      text: 开始之前
+      link: /before/before
     - theme: alt
-      text: API Examples
-      link: /api-examples
+      text: 正式开始
+      link: /start/getversion
 
 features:
   - title: Feature A
