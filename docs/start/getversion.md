@@ -22,7 +22,7 @@ https://piston-meta.mojang.com/mc/game/version_manifest_v2.json
 
 ::: tip
 
-此 API 也可通过 HTTP 协议访问，不过出于安全性考虑，建议使用 HTTPS 协议
+使用 HTTP 协议访问 Mojang API 会返回 400/502 响应，详见[Hex-Dragon/PCL2#964](https://github.com/Hex-Dragon/PCL2/issues/964)
 
 :::
 
@@ -57,7 +57,9 @@ https://launchermeta.mojang.com/mc/game/version_manifest.json
 }
 ```
 
-我们要做的就是解析这些东西，然后存储下来。
+我们要做的就是下载这个列表，然后保存并解析。
+
+示例代码
 
 ```python
 # 这里使用第三方库 requests，你也可以换成 aiohttp/httpx/urllib/http ，但是不同库使用方法不同
