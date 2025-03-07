@@ -43,3 +43,19 @@ Authlib 和 Authlib-Injector 是两个不同的东西。
 
 :::
 
+## Yggdrail ALI 指示
+
+Yggdrasil 验证服务器一般会在请求响应头内增加 `X-Authlib-Inject-API-Location`。
+
+通过此字段，可以实现仅填写域名就能使用认证服务的功能。
+
+例子
+
+```python
+import requests
+
+response = requests.head(url="https://yggdrasil.example.com")
+
+location = response.headers.get("X-Authlib-Inject-API-Location")
+
+```
