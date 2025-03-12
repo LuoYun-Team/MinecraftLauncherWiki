@@ -40,13 +40,13 @@
      
         - [ ] 1.5.2 修改皮肤和披风
 
-    - [ ] 1.6 正版登录
+    - [x] 1.6 正版登录
 
         - [x] 1.6.1 Microsoft OAuth2 授权代码流登录
  
-        - [ ] 1.6.2 Microsoft OAuth2 授权代码流登录（自有客户端）
+        - [x] 1.6.2 Microsoft OAuth2 授权代码流登录（自有客户端）
      
-        - [ ] 1.6.3 Microsoft OAuth2 设备代码流登录（自有客户端）
+        - [x] 1.6.3 Microsoft OAuth2 设备代码流登录（自有客户端）
 
     - [ ] 1.7 在线服务 API
 
