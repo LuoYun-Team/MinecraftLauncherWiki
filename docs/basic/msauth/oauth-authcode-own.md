@@ -1,4 +1,4 @@
-jinzheng# 1.6.2 Oauth 授权代码流登录（自有客户端）
+# 1.6.2 Oauth 授权代码流登录（自有客户端）
 
 :::warning
 
@@ -20,12 +20,11 @@ jinzheng# 1.6.2 Oauth 授权代码流登录（自有客户端）
 
 ## 用户交互部分
 
-此部分我们假设 client id 为 1，回调服务器为 http://localhost:29995/api/account.login.msa/oauth
 
 第一步需要启动器让用户访问如下页面。
 
 ```
-https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize?client_id=1&response_type=code&scope=XboxLive.signin%20offline_access&redirect_uri=http%3A%2F%2Flocalhost:29995/api/account.login.msa/oauth
+https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize?client_id={ms_client_id}&response_type=code&scope=XboxLive.signin%20offline_access&redirect_uri=http%3A%2F%2Flocalhost:29995/api/account.login.msa/oauth
 
 ```
 
@@ -45,11 +44,11 @@ https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize?client_id=1&re
 
 ```http
 
-client_id=1&code=<HTTP 服务器获取的回调授权码>&grant_type=authorization_code&redirect_uri=http://localhost:29995/api/account.login.msa/oauth&scope=XboxLive.signin%20offline_access
+client_id=<ms_client_id>&code=<HTTP 服务器获取的回调授权码>&grant_type=authorization_code&redirect_uri=http://localhost:29995/api/account.login.msa/oauth&scope=XboxLive.signin%20offline_access
 
 ```
 
-将请求头中的 Content-Type 设置为 application/x-www-urlencoded，Accept 设置为 application/json，随后向下面的 Url 发送 POST 请求以登录到 Microsoft 账户。
+将请求头中的 Content-Type 设置为 application/x-www-form-urlencoded，Accept 设置为 application/json，随后向下面的 Url 发送 POST 请求以登录到 Microsoft 账户。
 
 ```http
 
@@ -81,7 +80,7 @@ import requests as r
 import webbowser as wb
 from urllib.parse import urlparse,urlparse_qs
 
-wb.open("https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize?client_id=1&response_type=code&scope=XboxLive.signin%20offline_access&redirect_uri=http%3A%2F%2Flocalhost:29995/api/account.login.msa/oauth")
+wb.open(f"https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize?client_id={ms_client_id}&response_type=code&scope=XboxLive.signin%20offline_access&redirect_uri=http%3A%2F%2Flocalhost:29995/api/account.login.msa/oauth")
 
 call_back = get_http_callback_oauth_code()
 
@@ -93,10 +92,10 @@ user_auth_code = query_data.get("code")
 
 if user_auth_code:
     headers = {
-        "Content-Type":"application/x-www-urlencoded",
+        "Content-Type":"application/x-www-form-urlencoded",
         "Accept":"application/json"
     }
-    req_data = f"client_id=1&code={user_auth_code}&grant_type=authorization_code&redirect_uri=https://login.live.com/oauth20_desktop.srf&scope=XboxLive.signin%20offline_access"  
+    req_data = f"client_id={ms_client_id}&code={user_auth_code}&grant_type=authorization_code&redirect_uri=https://login.live.com/oauth20_desktop.srf&scope=XboxLive.signin%20offline_access"  
     resp = r.post(url="https://login.microsoftonline.com/consumers/oauth2/v2.0/token",headers=headers,data=req_data)
     resp_json = resp.json()
     access = resp.get("access_token")
@@ -126,7 +125,39 @@ POST https://login.microsoftonline.com/consumers/oauth2/v2.0/token
 我们需要提交的数据为
 
 ```http
-client_id=&refresh_token=<刷新令牌>&grant_type=refresh_token&scope=XboxLive.signin offline_access
+client_id=<ms_client_id>&refresh_token=<刷新令牌>&grant_type=refresh_token&scope=XboxLive.signin offline_access
+```
+
+如果令牌有效，将会收到如下响应。
+
+```json
+{
+   "token_type":"Bearer",
+   "scope":"XboxLive.signin XboxLive.offline_access",
+   "expires_in":3600,
+   "ext_expires_in":3600,
+   "access_token":"<新的账户访问令牌>",
+   "refresh_token":"<新的刷新令牌>"
+}
+```
+
+### 示例代码
+
+```python
+import requests as r
+
+login_data = f"client_id={ms_client_id}&refresh_token={refresh}&grant_type=refresh_token&scope=XboxLive.signin offline_access"
+
+resp = r.post(url="https://login.microsoftonline.com/consumers/oauth2/v2.0/token",headers=headers,data=login_data)
+
+resp_json = resp.json()
+
+access = resp_json.get("access_token")
+refresh = resp_json.get("refresh_token")
+if refresh and access:
+    return access,refresh
+else:
+    return "error","invalid response"
 ```
 
 扩展阅读：[在线服务-登录](../online.service/login)

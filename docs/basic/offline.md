@@ -9,3 +9,8 @@
 :::
 
 
+[1.4.1 标准离线登录](./offline/legacy.md)
+
+[1.4.2 可更换皮肤的离线登录](./offline/yggdrasil.md)
+
+[1.4.3 使用正版玩家的皮肤](./offline/online.skin.md)

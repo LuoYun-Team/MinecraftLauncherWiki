@@ -172,7 +172,7 @@ name 目前已知的只有一项，名为 preferredLanguage，记录了用户偏
 ### AuthServer 部分
 
 
-#### 登录接口
+#### 登录
 
 ```http
 
@@ -293,7 +293,7 @@ else:
 
 ```
 
-#### 刷新接口
+#### 刷新令牌
 
 ```http
 
@@ -323,7 +323,6 @@ POST /authserver/refresh
 响应示例
 
 ```json
-
 {
 	"accessToken":"26e6d239b6d14c8186e5137be904f856",
 	"clientToken":"26e6d239b6d14c8186e5137be904f856",
@@ -352,7 +351,6 @@ POST /authserver/refresh
 	    ]
 	}
 }
-
 ```
 
 在示例中，我们将 26e6d239b6d14c8186e5137be904f856 这个令牌绑定到 LuoTianyi 这个角色上。
@@ -391,4 +389,26 @@ if login_result.get("selectedProfile",False):
     return login_result.get("accessToken"),login_result.get("selectedProfile")
 else:
     return login_result.get("accessToken"),{}
+```
+
+#### 验证接口
+
+```http
+POST /authserver/refresh
+```
+
+#### 吊销令牌
+
+通过此 API，可以将当前的访问令牌设置为无效，从而实现登出启动器的功能。
+
+```http
+POST /authserver/invalidate
+```
+
+#### 登出
+
+通过此 API，所有先前被颁发的访问令牌将被吊销，从而实现退出多个客户端的账号。
+
+```http
+POST /authserver/signout
 ```

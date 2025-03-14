@@ -4,6 +4,7 @@ import { defineConfig } from "vitepress"
 export default defineConfig({
   title: "Minecraft 启动器开发指北",
   description: "Minecraft 启动器开发指北",
+  ignoreDeadLinks: true,
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [

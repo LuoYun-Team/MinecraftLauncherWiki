@@ -22,4 +22,6 @@ NOT AN OFFICIAL MINECRAFT SERVICE. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR 
 
 此文档正在编写中，部分内容可能随时发生变化。
 
+代码中包含 return 语句但是没有定义方法是刻意设计，请勿为此提交反馈。
+
 :::
