@@ -166,7 +166,7 @@
   },
   //资源文件索引
   "assetIndex": {
-    //继承版本，低版本是其基准版本，例如 1.12.2 的基准版本是 1.12
+    //资源文件版本，低版本是其继承版本，例如 1.12.2 的继承版本是 1.12
     // 自 22w45a 开始改为从 1 起递增的数字
     "id": "17", 
     "sha1": "7cedb23305a218c4d1a58d27e7ad8a86ee495d48",
@@ -251,10 +251,34 @@
   "time": "2024-06-13T08:24:03+00:00",
   "type": "release"
 }
-
-# 1.8.9
-
 ```
+
+低版本会在 native 部分包含 classifiers，这个是实际的 natives 文件，需要下载下来然后解压。
+
+我们需要注意其中的 assetsIndex 和 libraries，这两个部分包含了游戏资源文件和支持库（包括 native 文件）文件，需要下载下来
+
+libraries 倒是很好下载，因为 url 和 path 都提供好了，主要还是资源文件问题
+
+## 获取资源文件的下载地址
+
+首先基本下载地址是
+
+```http
+GET https://resources.download.minecraft.net
+```
+
+然后以此为基础，第一个目录是文件 sha1 的前两位，例如。
+
+```http
+GET https://resources.download.minecraft.net/a7
+```
+
+随后以此为基础，叠加文件 sha1 就能得到真正的下载地址。
+
+保存路径也是一样的，在 /assets/objects 建立对应的文件夹即可。
+
+资源索引文件需要保存在 /assets/indexes/<资源索引对应的版本>，并且启动器需要时不时的更新一下。
+
 
 ```python
 
@@ -292,6 +316,7 @@ with open(filepath,"wb") as f:
     f.write(resp.content)
 
 if not checkfile(filepath,version_json["assetsIndex"]["sha1"],version_json["assetsIndex"]["size"]):
+    raise RuntimeError("文件校验失败")
 
 # 提取客户端文件
 download_files[version_json["downloads"]["client"]["url"]] ={
@@ -357,5 +382,3 @@ for url,meta in download_files:
 
 
 ```
-
-

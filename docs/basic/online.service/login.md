@@ -6,7 +6,7 @@
 
 ## XboxAPI
 
-作为 Microsoft 旗下的游戏，Microsoft 自然将其放在了自家的游戏平台，这个平台就是 Xbox。
+作为 Microsoft 旗下公司的游戏，Microsoft 自然将其放在了自家的游戏平台，这个平台就是 Xbox。
 
 其实从 OAuth 登录部分就可以看出，我们申请了 XboxLive.signin 这个权限，这个权限可不是瞎申请的，既然要申请就必然会有用到它的地方（不然就违背最小权限原则了）。
 
@@ -39,7 +39,7 @@ POST https://user.auth.xboxlive.com/user/authenticate
 
 ```
 
-需要将 Content-Type 和 Accept 都设置为 application/json
+需要将 Content-Type 和 Accept 都设置为 application/json。
 
 如果 Microsoft 账户访问令牌有效，我们将收到如下响应。
 
@@ -88,7 +88,7 @@ resp = r.post(url="https://user.auth.xboxlive.com/user/authenticate",headers=hea
 resp_json = resp.json()
 
 token = resp_json.get("Token")
-xhs = resp_json.get("DisplayClaims",{}).get("xui",{}).get("xhs")
+xhs = resp_json.get("DisplayClaims",{}).get("xui",[{}])[0].get("uhs")
 
 if token and xhs:
     return token,xhs
@@ -100,7 +100,7 @@ else:
 
 ### Xbox Live -> XSTS
 
-现在，我们登陆到了 XboxLive，并获取了对应的访问令牌，现在需要通过 XboxLiveToken 获取 XSTS Token，获取到 XSTS Token 后，我们就能用 XSTS 令牌登录 Minecraft 验证服务器了。
+现在，我们登陆到了 XboxLive，并获取了对应的访问令牌，现在需要通过 XboxLive Token 获取 XSTS Token，获取到 XSTS Token 后，我们就能用 XSTS 令牌登录 Minecraft 验证服务器了。
 
 我们需要提交的数据为
 
@@ -121,7 +121,7 @@ POST https://xsts.auth.xboxlive.com/xsts/authorize
 }
 ```
 
-如果认证通过，将会收到如下响应
+如果认证通过，将会收到如下响应。
 
 ```json
 {
@@ -167,7 +167,7 @@ resp_json = resp.json()
 
 token = resp_json.get("Token")
 # 如果需要可以取消注释
-# xhs = resp_json.get("DisplayClaims",{}).get("xui",{}).get("xhs")
+# xhs = resp_json.get("DisplayClaims",{}).get("xui",[{}])[0].get("xhs")
 
 if token:
     return token
@@ -208,10 +208,6 @@ POST https://api.minecraftservices.com/authentication/login_with_xbox
 }
 ```
 
-似乎到这一步就大功告成了？就可以启动游戏了？
-
-诶，别急，先接着往下看。
-
 #### 示例代码
 
 ```python
@@ -240,6 +236,11 @@ else:
     return "invalid response"
 
 ```
+
+似乎到这一步就大功告成了？就可以启动游戏了？
+
+诶，别急，先接着往下看。
+
 
 ### 验证产品许可
 
@@ -330,10 +331,9 @@ if not resp.json().get("items"):
     "${user_type}",
     "--versionType",
     "${version_type}",
-    
 ```
 
-是的，你不是只传个 AccessToken 就能启动游戏了，拖更王 Mojang 才不会帮你做获取档案这一步呢 (☆-ｖ-)。
+是的，你不是只传个 AccessToken 就能启动游戏了~~，拖更王 Mojang 才不会帮你做获取档案这一步呢 (☆-ｖ-)~~。
 
 同样的需要设置 Authorization 头。
 

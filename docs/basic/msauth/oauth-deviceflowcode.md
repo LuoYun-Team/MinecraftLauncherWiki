@@ -130,7 +130,7 @@ grant_type=urn:ietf:params:oauth:grant-type:device_code&client_id=<client_id>&de
 
 - slow_down：应用程序的轮询间隔小于 interval 给定的值。
 
-解决方案：在下次轮询时间隔 interval + 5 * 错误出现次数。
+解决方案：在下次轮询时间隔 interval 秒。
 
 - invalid_request：请求格式有误。
 

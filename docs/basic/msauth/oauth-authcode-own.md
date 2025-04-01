@@ -14,7 +14,7 @@
 
 此登录方法需要开发者注册 Microsoft Azure 账户，并在 Microsoft Azure Entra ID 管理单元注册应用程序。
 
-注册后应用程序需要交由 Mojang 审批后才能登录
+注册后应用程序需要交由 Mojang 审批后才能登录。
 
 :::
 
@@ -44,16 +44,14 @@ https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize?client_id={ms_
 
 ```http
 
-client_id=<ms_client_id>&code=<HTTP 服务器获取的回调授权码>&grant_type=authorization_code&redirect_uri=http://localhost:29995/api/account.login.msa/oauth&scope=XboxLive.signin%20offline_access
+client_id=<ms_client_id>&code=<HTTP 服务器获取的回调授权码>&grant_type=authorization_code&redirect_uri=https://localhost:29995/api/account.login.msa/oauth&scope=XboxLive.signin%20offline_access
 
 ```
 
 将请求头中的 Content-Type 设置为 application/x-www-form-urlencoded，Accept 设置为 application/json，随后向下面的 Url 发送 POST 请求以登录到 Microsoft 账户。
 
 ```http
-
 POST https://login.microsoftonline.com/consumers/oauth2/v2.0/token
-
 ```
 
 响应为
