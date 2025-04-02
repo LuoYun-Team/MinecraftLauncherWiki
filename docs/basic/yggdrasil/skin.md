@@ -1,8 +1,8 @@
 # 1.5.2 修改皮肤和披风
 
-## 皮肤
+## 皮肤/披风
 
-上传皮肤
+上传
 
 ```http
 PUT /api/user/profile/<uuid>/<textureType>
@@ -13,5 +13,11 @@ PUT /api/user/profile/<uuid>/<textureType>
 请求载荷：
 
 ```http
-model=""&file=
+model=""&file=/home/boximengling/.minecraft/authlib-injector/.cache/skin.png
+```
+
+重置
+
+```http
+DELETE /api/user/profile/<uuid>/<textureType>
 ```
