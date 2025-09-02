@@ -255,7 +255,7 @@
 
 低版本会在 native 部分包含 classifiers，这个是实际的 natives 文件，需要下载下来然后解压。
 
-我们需要注意其中的 assetsIndex 和 libraries，这两个部分包含了游戏资源文件和支持库（包括 native 文件）文件，需要下载下来
+我们需要注意其中的 assetsIndex 和 libraries，这两个部分包含了游戏资源文件和支持库（包括 native 文件）文件，需要下载下来，高版本会自行解压，无需启动器处理。
 
 libraries 倒是很好下载，因为 url 和 path 都提供好了，主要还是资源文件问题
 
@@ -264,13 +264,13 @@ libraries 倒是很好下载，因为 url 和 path 都提供好了，主要还�
 首先基本下载地址是
 
 ```http
-GET https://resources.download.minecraft.net
+https://resources.download.minecraft.net
 ```
 
 然后以此为基础，第一个目录是文件 sha1 的前两位，例如。
 
 ```http
-GET https://resources.download.minecraft.net/a7
+https://resources.download.minecraft.net/a7
 ```
 
 随后以此为基础，叠加文件 sha1 就能得到真正的下载地址。
@@ -281,6 +281,8 @@ GET https://resources.download.minecraft.net/a7
 
 
 ```python
+
+# 这段代码我没实际测试过，所以可能逻辑上就转不起来，仅供实现思路参考
 
 import requests as r
 
@@ -379,6 +381,7 @@ for url,meta in download_files:
             f.write(resp.content)
         if not checkfile(meta["path"],meta["sha1"],meta["size"])
             raise RuntimeError("文件校验失败！")
+
 
 
 ```
